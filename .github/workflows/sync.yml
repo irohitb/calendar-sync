@@ -1,0 +1,35 @@
+name: Calendar Sync
+
+on:
+  schedule:
+    - cron: "*/15 * * * *"
+  workflow_dispatch:
+
+concurrency:
+  group: calendar-sync
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - run: npm ci
+
+      - run: npm run build
+
+      - name: Run sync
+        env:
+          GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+          GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
+          WORK_REFRESH_TOKEN: ${{ secrets.WORK_REFRESH_TOKEN }}
+          PERSONAL_REFRESH_TOKEN: ${{ secrets.PERSONAL_REFRESH_TOKEN }}
+          SYNC_DAYS: "30"
+        run: npm run sync
