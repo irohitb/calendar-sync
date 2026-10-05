@@ -9,6 +9,9 @@ concurrency:
   group: calendar-sync
   cancel-in-progress: false
 
+permissions:
+  contents: write
+
 jobs:
   sync:
     runs-on: ubuntu-latest
@@ -32,4 +35,19 @@ jobs:
           WORK_REFRESH_TOKEN: ${{ secrets.WORK_REFRESH_TOKEN }}
           PERSONAL_REFRESH_TOKEN: ${{ secrets.PERSONAL_REFRESH_TOKEN }}
           SYNC_DAYS: "30"
+          BUFFER_BEFORE_MIN: "15"
+          BUFFER_AFTER_MIN: "15"
         run: npm run sync
+
+      - name: Commit meeting history
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add history
+          if git diff --staged --quiet; then
+            echo "No history changes to commit."
+          else
+            git commit -m "chore: update meeting history"
+            git pull --rebase --autostash origin main
+            git push
+          fi

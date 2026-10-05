@@ -4,6 +4,16 @@ function required(name: string): string {
   return v;
 }
 
+function minutes(name: string, fallback: number): number {
+  const raw = process.env[name];
+  if (!raw) return fallback;
+  const n = Number(raw);
+  if (!Number.isFinite(n) || n < 0) {
+    throw new Error(`${name} must be a non-negative number, got: ${raw}`);
+  }
+  return n;
+}
+
 export const env = {
   google: {
     clientId: required("GOOGLE_CLIENT_ID"),
@@ -12,4 +22,7 @@ export const env = {
     personalRefreshToken: required("PERSONAL_REFRESH_TOKEN"),
   },
   syncDays: Number(process.env.SYNC_DAYS ?? "30"),
+  // Padding applied to mirrored blocks so meetings aren't booked back-to-back.
+  bufferBeforeMin: minutes("BUFFER_BEFORE_MIN", 15),
+  bufferAfterMin: minutes("BUFFER_AFTER_MIN", 15),
 };
