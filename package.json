@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "build": "tsc -p .",
+    "test": "tsx --test src/google.test.ts",
     "sync": "node dist/index.js",
     "dev": "tsx src/index.ts",
     "get-token": "tsx scripts/get-refresh-token.ts"

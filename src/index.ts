@@ -1,4 +1,9 @@
-import { workCal, personalCal } from "./google.js";
+import {
+  workCal,
+  personalCal,
+  verifyCalendarAccess,
+  CalendarAccessError,
+} from "./google.js";
 import {
   syncDirection,
   listAll,
@@ -8,10 +13,44 @@ import {
   SyncChange,
 } from "./sync.js";
 import { toRecords, writeHistory, appendSyncLog } from "./history.js";
+import { sendAccessErrorAlert } from "./slack.js";
+
+async function verifyAccess(
+  work: ReturnType<typeof workCal>,
+  personal: ReturnType<typeof personalCal>,
+): Promise<void> {
+  const checks = await Promise.allSettled([
+    verifyCalendarAccess(work, "work"),
+    verifyCalendarAccess(personal, "personal"),
+  ]);
+  const failures = checks.flatMap((result) =>
+    result.status === "rejected" ? [result.reason] : [],
+  );
+
+  const alerts = failures
+    .filter((error): error is CalendarAccessError =>
+      error instanceof CalendarAccessError,
+    )
+    .map(async (error) => {
+      try {
+        await sendAccessErrorAlert(error);
+      } catch (alertError) {
+        console.error("Failed to send Slack access-token alert:", alertError);
+      }
+    });
+  await Promise.all(alerts);
+
+  if (failures.length === 1) throw failures[0];
+  if (failures.length > 1) {
+    throw new AggregateError(failures, "Google Calendar access checks failed");
+  }
+}
 
 async function main() {
   const work = workCal();
   const personal = personalCal();
+
+  await verifyAccess(work, personal);
 
   console.log("Syncing work → personal (as 'Work')…");
   const wtp = await syncDirection(work, personal, "work-to-personal");
