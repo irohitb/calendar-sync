@@ -1,6 +1,6 @@
 # calendar-sync
 
-Two-way calendar sync between a work and personal Google Calendar, running on GitHub Actions every 15 minutes.
+Two-way calendar sync between a work and personal Google Calendar, running on GitHub Actions every hour.
 
 - Work events appear on the personal calendar titled **"Work"**.
 - Personal events appear on the work calendar titled **"Busy"**.
@@ -39,10 +39,17 @@ In the repo settings → Secrets and variables → Actions, add:
 - `GOOGLE_CLIENT_SECRET`
 - `WORK_REFRESH_TOKEN`
 - `PERSONAL_REFRESH_TOKEN`
+- `SLACK_ERROR_ALERT_WEBHOOK_URL` — an incoming webhook connected to the
+  `#error-alert` channel
 
 ### 4. Enable the workflow
 
-`.github/workflows/sync.yml` runs every 15 minutes. You can also trigger it manually from the Actions tab (`workflow_dispatch`).
+`.github/workflows/sync.yml` runs every hour. You can also trigger it manually from the Actions tab (`workflow_dispatch`).
+
+Before each sync, both Google Calendar credentials are checked independently.
+If either credential is expired, revoked, or otherwise rejected, the workflow
+posts a sanitized alert to `#error-alert` identifying the affected GitHub
+secret. The workflow then fails without attempting to sync partial data.
 
 ## Local run
 
