@@ -6906,3 +6906,22 @@ Every calendar change this job made. Times only.
 | deleted | work → personal | 2026-12-14T20:00:00+05:30 | 2026-12-14T20:45:00+05:30 |
 | deleted | work → personal | 2026-12-14T22:00:00+05:30 | 2026-12-14T23:00:00+05:30 |
 | deleted | work → personal | 2026-12-17T21:00:00+05:30 | 2026-12-17T22:00:00+05:30 |
+
+## 2026-11-18T05:57:21.569Z
+
+| action | direction | event start | event end |
+| --- | --- | --- | --- |
+| updated | work → personal | 2026-11-26T00:00:00+05:30 | 2026-11-26T00:30:00+05:30 |
+| updated | work → personal | 2026-12-03T00:00:00+05:30 | 2026-12-03T00:30:00+05:30 |
+| updated | work → personal | 2026-12-10T00:00:00+05:30 | 2026-12-10T00:30:00+05:30 |
+| updated | work → personal | 2026-12-17T00:00:00+05:30 | 2026-12-17T00:30:00+05:30 |
+| updated | work → personal | 2026-11-24T01:30:00+05:30 | 2026-11-24T02:00:00+05:30 |
+| updated | work → personal | 2026-12-01T01:30:00+05:30 | 2026-12-01T02:00:00+05:30 |
+| updated | work → personal | 2026-12-08T01:30:00+05:30 | 2026-12-08T02:00:00+05:30 |
+| updated | work → personal | 2026-12-15T01:30:00+05:30 | 2026-12-15T02:00:00+05:30 |
+| updated | work → personal | 2026-11-23T20:30:00+05:30 | 2026-11-23T21:00:00+05:30 |
+| updated | work → personal | 2026-11-30T20:30:00+05:30 | 2026-11-30T21:00:00+05:30 |
+| updated | work → personal | 2026-12-07T20:30:00+05:30 | 2026-12-07T21:00:00+05:30 |
+| updated | work → personal | 2026-12-14T20:30:00+05:30 | 2026-12-14T21:00:00+05:30 |
+| updated | work → personal | 2026-12-01T00:00:00+05:30 | 2026-12-01T00:15:00+05:30 |
+| updated | work → personal | 2026-12-15T00:00:00+05:30 | 2026-12-15T00:15:00+05:30 |
